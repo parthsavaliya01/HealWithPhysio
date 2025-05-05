@@ -1,0 +1,38 @@
+***********Admin**************
+
+setting.py
+username - password
+
+
+***********capston - folder**************
+
+db_config.php
+username - password
+
+db_connect.php
+username - password
+
+
+**************flutter application**************
+
+main.dart
+
+ip address change krva nu
+open terminal -> ipconfig
+
+
+************** capstone - databse **************
+
+CREATE TABLE ratings_feedback (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    appointment_id INT NOT NULL,
+    physio_name VARCHAR(255) NOT NULL,
+    patient_name VARCHAR(255) NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    feedback TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
+);
+
+
+ALTER TABLE physio_physiotherapist ADD average_rating FLOAT DEFAULT 0;
