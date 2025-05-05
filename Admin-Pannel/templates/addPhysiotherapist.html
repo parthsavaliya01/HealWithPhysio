@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #deeff5;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: #ADD8E6;
+            width: 250px;
+            height: 100vh;
+            box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            color: #ffffff;
+            overflow-y: auto; /* Enable vertical scrollbar for menu */
+        }
+
+        .sidebar h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-align: center;
+            border-bottom: 2px solid black;
+            color: black;
+            padding-bottom: 10px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: black;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background: #ffffff;
+            color: #1a535c;
+        }
+
+        .content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .physio-form {
+            width: 800px;
+            max-width: 500px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight:bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .physio-form input[type="text"],
+        .physio-form input[type="number"],
+        .physio-form input[type="email"],
+        .physio-form input[type="password"],
+        .physio-form input[type="file"],
+        .physio-form input[type="time"],
+        .physio-form textarea {
+            width: 480px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s;
+        }
+
+        .physio-form input:focus,
+        .physio-form textarea:focus {
+            border-color: #1a535c;
+            outline: none;
+        }
+
+        .submit-btn {
+            background-color: #ADD8E6;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #DEEFF5;
+        }
+
+        .physio-form select {
+            width: 500px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            appearance: none; /* Remove default browser styling */
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Custom arrow */
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+        }
+
+        .physio-form select:focus {
+            border-color: #1a535c;
+            outline: none;
+            box-shadow: 0 0 5px rgba(26, 83, 92, 0.3);
+        }
+
+        .physio-form select:hover {
+            border-color: #999;
+        }
+
+        .physio-form select option {
+            background-color: #fff;
+            color: #333;
+        }
+        /* Top Bar Styling */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 20px 30px;
+            background-color: #ADD8E6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-bar a {
+            text-decoration: none;
+            color: black;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar i {
+            font-size: 30px; /* Icon size */
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>HealWithPhysio</h1>
+        <img src="{% static 'logo.png' %}" width="100" height="100">
+        <a href="/dashboard">Home</a>
+        <a href="/patient">Manage Patient Profile</a>
+        <a href="/physiotherapist">Manage Physiotherapist Profile</a>
+        <a href="/appointment">Manage Appointment</a>
+        <a href="/addPatient">Add Patient</a>
+        <a href="#">Add Physiotherapist</a>
+        <a href="/addAppointment">Add Appointment</a>
+        <a href="/manageProfile">Manage Profile</a>
+        <a href="/ratings_feedback">View Rating & Feedback</a>
+        <a href="/index">Logout</a>
+    </div>
+    <div class="top-bar">
+        <a href="/manageProfile">
+            <i class="fas fa-user"></i>
+        </a>
+        <a href="/aboutus">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="/index">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </div>
+    <div class="content">
+        <h1>Add Physiotherapist</h1>
+        <form action="/managePhysiotherapist/" method="POST" enctype="multipart/form-data" class="physio-form">  
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter Full Name" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter Username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contact_no">Contact No</label>
+                <input type="number" id="contact_no" name="contact_no" placeholder="Enter Contact No" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter Email " required>
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <div>
+                    <input type="radio" id="male" name="gender" value="Male" checked>
+                    <label for="male">Male</label>
+                    <input type="radio" id="female" name="gender" value="Female">
+                    <label for="female">Female</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="photo">Profile Photo</label>
+                <input type="file" id="photo" name="photo" accept="image/*" required>
+            </div>
+
+            <div class="form-group">
+                <label for="appartment">Appartment</label>
+                <input type="text" id="appartment" name="appartment" placeholder="Enter Appartment" required>
+            </div>
+            <div class="form-group">
+                <label for="landmark">Landmark</label>
+                <input type="text" id="landmark" name="landmark" placeholder="Enter Landmark" required>
+            </div>
+            <div class="form-group">
+                <label for="area">Area</label>
+                <input type="text" id="area" name="area" placeholder="Enter Area" required>
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <select id="city" name="city" required>
+                    <option value="" disabled selected>Select City</option>
+                    <option value="Ahemdabad">Ahmedabad</option>
+                    <option value="Surat">Surat</option>
+                    <option value="Vadodara">Vadodara</option>
+                    <option value="Gandhinagar">Gandhinagar</option>
+                    <option value="Rajkot">Rajkot</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pincode">Pincode</label>
+                <input type="number" id="pincode" name="pincode" placeholder="Enter Pincode" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="clinic_start_time">Start Time</label>
+                <input type="time" id="clinic_start_time" name="clinic_start_time" min="09:00" max="20:00" required>
+            </div>
+
+            <div class="form-group">
+                <label for="clinic_end_time">End Time</label>
+                <input type="time" id="clinic_end_time" name="clinic_end_time" min="09:00" max="20:00" required>
+            </div>
+            <div class="form-group">
+                <label for="qualification">Qualification</label>
+                <input type="text" id="qualification" name="qualification" placeholder="Enter Qualification" required>
+            </div>
+
+            <div class="form-group">
+                <label for="qualification_photo">Qualification Photo</label>
+                <input type="file" id="qualification_photo" name="qualification_photo" accept="image/*" required>
+            </div>
+
+             <div class="form-group">
+                <label for="specialization">Specialization</label>
+                <select id="specialization" name="specialization" required>
+                    <option value="" disabled selected>Select Specialization</option>
+                    <option value="Orthopedic">Orthopedic</option>
+                    <option value="Neurological">Neurological</option>
+                    <option value="Pediatric">Pediatric</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Musculoskeletal">Musculoskeletal</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="experience">Experience (Years)</label>
+                <input type="number" id="experience" name="experience" placeholder="Enter Experience"required>
+            </div>
+            <div class="form-group">
+                <label for="average_rating">Average Rating</label>
+                <input type="text" id="average_rating" name="average_rating" placeholder="Enter Average Rating"required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Physiotherapist" class="submit-btn">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

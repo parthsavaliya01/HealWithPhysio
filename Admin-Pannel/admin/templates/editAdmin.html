@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Add Chart.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font -->
+    <style>
+       body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #deeff5;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: #ADD8E6;
+            width: 250px;
+            height: 100vh;
+            box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            color: #ffffff;
+            overflow-y: auto; /* Enable vertical scrollbar for menu */
+        }
+
+        .sidebar h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-align: center;
+            border-bottom: 2px solid black;
+            color: black;
+            padding-bottom: 10px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: black;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background: #ffffff;
+            color: #1a535c;
+        }
+
+        /* Image Styling */
+      
+
+        .content {
+            margin-left: 250px; /* Adjusted to match sidebar width */
+            width: calc(100% - 250px);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .patient-form {
+            width: 600px;
+            max-width: 500px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight:bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .patient-form input[type="text"],
+        .patient-form input[type="number"],
+        .patient-form input[type="email"],
+        .patient-form input[type="password"],
+        .patient-form textarea {
+            width: 480px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s;
+        }
+
+        .patient-form input[type="text"]:focus,
+        .patient-form input[type="number"]:focus,
+        .patient-form input[type="email"]:focus,
+        .patient-form input[type="password"]:focus,
+        .patient-form textarea:focus {
+            border-color: #1a535c;
+            outline: none;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .radio-group label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .patient-form textarea {
+            resize: none;
+        }
+
+        .submit-btn {
+            background-color: #ADD8E6;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #DEEFF5;
+        }
+        /* Top Bar Styling */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 20px 30px;
+            background-color: #ADD8E6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-bar a {
+            text-decoration: none;
+            color: black;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+         <h1>HealWithPhysio</h1>
+        <img src="{% static 'logo.png' %}" width="100" height="100">
+        <a href="/dashboard">Home</a>
+        <a href="/patient">Manage Patient Profile</a>
+        <a href="/physiotherapist">Manage Physiotherapist Profile</a>
+        <a href="/appointment">Manage Appointment</a>
+        <a href="/addPatient">Add Patient</a>
+        <a href="/addPhysiotherapist">Add Physiotherapist</a>
+        <a href="/addAppointment">Add Appointment</a>
+        <a href="/manageProfile">Manage Profile</a>
+        <a href="/ratings_feedback">View Rating & Feedback</a>
+        <a href="/index">Logout</a>
+    </div>
+        <div class="top-bar">
+        <a href="/manageProfile">
+            <i class="fas fa-user"></i>
+        </a>
+        <a href="/aboutus">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="/index">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </div>
+    <div class="content">
+    <h1>Update Admin</h1>
+    <form method="POST" class="patient-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="{{ admin.username }}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ admin.email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" value="{{ admin.password }}" required>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Update Admin" class="submit-btn">
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

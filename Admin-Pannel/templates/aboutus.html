@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;    
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #DEEFF5;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-container {
+            height: 100vh;
+            width: 100vw; /* Ensures the background spans the full width */
+            background-image: url('{% static "bg.jpg" %}');
+            background-size: cover; /* Ensures the image covers the entire container */
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .screen {        
+            background: #ADD8E6; 
+            position: relative;    
+            height: 750px; 
+            width: 800px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .screen__content {
+            z-index: 1;
+            position: relative;    
+            height: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #000100;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            width: 100%;
+            text-align: left;
+        }
+
+        p {
+            color: #333; /* Darkened text color for better contrast */
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-size: 1.2em;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        li {
+            padding: 12px;
+            border-bottom: 1px solid #b2dfdb;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            color: #333; /* Darkened text color for better contrast */
+            font-size: 16px;
+        }
+
+        li:hover {
+            background-color: #e0f2f1;
+        }
+
+        li i {
+            margin-right: 10px;
+            color: #0b150b; /* Icon color */
+        }
+
+        .logo {
+            position: absolute;
+            top: 1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height:150px;
+        }
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #000; /* Adjust color as needed */
+            text-decoration: none;
+        }
+
+        .back-arrow:hover {
+            color: #555;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <div class="container">
+            <div class="screen">
+                <a href="javascript:history.back()" class="back-arrow">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <img src="{% static 'logo.png' %}" class="logo"> <!-- Add logo here --><br><br><br>
+                <div class="screen__content">
+                    <header>
+                        <h2>About Us</h2>
+                    </header>
+                    <section class="contact-info">
+                        <p>At HealWithPhysio, we are dedicated to making quality physiotherapy accessible and convenient by connecting patients with experienced physiotherapists who offer at-home treatment services.
+
+Finding reliable physiotherapy care at home can be challenging, and we aim to bridge this gap by providing a seamless platform where patients can easily search for, compare, and book appointments with certified professionals based on their expertise and availability.
+
+With a user-friendly interface and a commitment to personalized care, HealWithPhysio ensures that patients receive effective treatment in the comfort of their own homes.
+                    </p>
+                        <ul class="email-list">
+                            <li><i class="fas fa-envelope"></i><b>Email :  </b>  healwithphysio@gmail.com</li>
+                            <li><i class="fas fa-phone"></i><b>Contact :  </b>  +91 11111 00000</li><br><br><br><br>
+                            <!-- <li><i class="fas fa-envelope"></i><b>Email: </b> keshwi@gmail.com</li>
+                            <li><i class="fas fa-phone"></i><b>Contact: </b> 987-654-3210</li>
+                            <li><i class="fas fa-envelope"></i><b>Email: </b> parth@gmail.com</li>
+                            <li><i class="fas fa-phone"></i><b>Contact: </b> 555-555-5555</li> -->
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

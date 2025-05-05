@@ -1,0 +1,311 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Add Chart.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font -->
+    <style>
+       body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #deeff5;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: #ADD8E6;
+            width: 250px;
+            height: 100vh;
+            box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            color: #ffffff;
+            overflow-y: auto; /* Enable vertical scrollbar for menu */
+        }
+
+        .sidebar h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-align: center;
+            border-bottom: 2px solid black;
+            color: black;
+            padding-bottom: 10px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: black;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background: #ffffff;
+            color: #1a535c;
+        }
+
+        /* Image Styling */
+        
+
+        .content {
+            margin-left: 250px; /* Adjusted to match sidebar width */
+            width: calc(100% - 250px);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .patient-form {
+            width: 600px;
+            max-width: 500px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight:bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .patient-form input[type="text"],
+        .patient-form input[type="number"],
+        .patient-form input[type="email"],
+        .patient-form input[type="password"],
+        .patient-form input[type="date"],
+        .patient-form input[type="time"],
+        .patient-form input[type="datetime-local"],
+        .patient-form textarea {
+            width: 480px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s;
+        }
+
+        .patient-form input[type="text"]:focus,
+        .patient-form input[type="number"]:focus,
+        .patient-form input[type="email"]:focus,
+        .patient-form input[type="password"]:focus,
+        .patient-form input[type="date"]:focus,
+        .patient-form input[type="time"]:focus,
+        .patient-form input[type="datetime-local"]:focus,
+        .patient-form textarea:focus {
+            border-color: #1a535c;
+            outline: none;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .radio-group label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .patient-form textarea {
+            resize: none;
+        }
+
+        .submit-btn {
+            background-color: #ADD8E6;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #DEEFF5;
+        }
+        /* Top Bar Styling */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 20px 30px;
+            background-color: #ADD8E6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-bar a {
+            text-decoration: none;
+            color: black;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+         <h1>HealWithPhysio</h1>
+        <img src="{% static 'logo.png' %}" width="100" height="100">
+        <a href="/dashboard">Home</a>
+        <a href="/patient">Manage Patient Profile</a>
+        <a href="/physiotherapist">Manage Physiotherapist Profile</a>
+        <a href="/appointment">Manage Appointment</a>
+        <a href="/addPatient">Add Patient</a>
+        <a href="/addPhysiotherapist">Add Physiotherapist</a>
+        <a href="/addAppointment">Add Appointment</a>
+        <a href="/manageProfile">Manage Profile</a>
+        <a href="/ratings_feedback">View Rating & Feedback</a>
+        <a href="/index">Logout</a>
+    </div>
+        <div class="top-bar">
+        <a href="/manageProfile">
+            <i class="fas fa-user"></i>
+        </a>
+        <a href="/aboutus">
+            <i class="fas fa-info-circle"></i>
+        </a>
+        <a href="/index">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </div>
+    <div class="content">
+    <h1>Update Appointment</h1>
+     <form method="POST" class="patient-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="physio_name">Physiotherapist Name</label>
+            <input type="text" id="physio_name" name="physio_name" value="{{ appointment.physio_name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="contact_number">Physiotherapist Contact No</label>
+            <input type="text" id="contact_number" name="contact_number" value="{{ appointment.contact_number }}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Physiotherapist Email</label>
+            <input type="text" id="email" name="email" value="{{ appointment.email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="gender">Physiotherapist Gender</label>
+            <input type="text" id="gender" name="gender" value="{{ appointment.gender }}" required>
+        </div>
+        <div class="form-group">
+            <label for="specialization">Physiotherapist Specialization</label>
+            <input type="text" id="specialization" name="specialization" value="{{ appointment.specialization }}" required>
+        </div>
+        <div class="form-group">
+            <label for="booking_date">Booking Date</label>
+            <input type="datetime-local" id="booking_date" name="booking_date" value="{{ appointment.booking_date }}" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <input type="text" id="status" name="status"  value="{{ appointment.status }}" required>
+        </div>
+        <div class="form-group">
+            <label for="appointment_date">Appointment Date</label>
+            <input type="date" id="appointment_date" name="appointment_date"  value="{{ appointment.appointment_date }}" required>
+        </div>
+        <div class="form-group">
+            <label for="consulting_type">Consulting Type</label>
+            <input type="text" id="consulting_type" name="consulting_type" value="{{ appointment.consulting_type }}" required>
+        </div>
+        <div class="form-group">
+            <label for="selected_slot">Selected Slot</label>
+            <input type="text" id="selected_slot" name="selected_slot" value="{{ appointment.selected_slot }}" required>
+        </div>
+        <div class="form-group">
+            <label for="is_emergency">Emergency</label>
+            <input type="text" id="is_emergency" name="is_emergency" value="{{ appointment.is_emergency }}" required>
+        </div>
+    
+        <div class="form-group">
+            <label for="apartment">Appartment</label>
+            <input type="text" id="apartment" name="appartment" value="{{ appointment.appartment }}" required>
+        </div>
+        <div class="form-group">
+            <label for="landmark">Landmark</label>
+            <input type="text" id="landmark" name="landmark" value="{{ appointment.landmark }}" required>
+        </div>
+        <div class="form-group">
+            <label for="area">Area</label>
+            <input type="text" id="area" name="area" value="{{ appointment.area }}" required>
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" value="{{ appointment.city }}" required>
+        </div>
+        <div class="form-group">
+            <label for="pincode">Pincode</label>
+            <input type="text" id="pincode" name="pincode" value="{{ appointment.pincode }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="patient_name">Patient Name</label>
+            <input type="text" id="patient_name" name="patient_name" value="{{ appointment.patient_name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="patient_contactno">Patient Contact No</label>
+            <input type="text" id="patient_contactno" name="patient_contactno" value="{{ appointment.patient_contactno }}" required>
+        </div>
+        <div class="form-group">
+            <label for="patient_email">Patient Email</label>
+            <input type="text" id="email" name="patient_email" value="{{ appointment.patient_email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="patient_gender">Patient Gender</label>
+            <input type="text" id="gender" name="patient_gender" value="{{ appointment.patient_gender }}" required>
+        </div>
+        <div class="form-group">
+            <label for="rejection_reason">Reject Reason</label>
+            <input type="text" id="rejection_reason" name="rejection_reason" value="{{ appointment.rejection_reason }}" required>
+        </div>
+        <div class="form-group">
+            <label for="rating">Rating</label>
+            <input type="text" id="rating" name="rating" value="{{ appointment.rating }}" required>
+        </div>
+        <div class="form-group">
+            <label for="feedback">Feedback</label>
+            <input type="text" id="feedback" name="feedback" value="{{ appointment.feedback }}" required>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Update Appointment" class="submit-btn">
+            <!-- <button type="submit">Update</button> -->
+        </div>
+    </form> 
+</div>
+
+</body>
+</html>
