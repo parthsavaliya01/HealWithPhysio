@@ -1,49 +1,79 @@
-# HealWithPhysio
+# 💪 HealWithPhysio – Full Stack Project
+This project is a complete physiotherapy management system, including:
 
-***********Admin panel **************
+🧑‍⚕️ Flutter Mobile Application (Patient Interface)
 
-setting.py - in this file change your username password
-username - password
+🛠️ Django Admin Panel (Admin Control & Backend)
 
+🔗 PHP + MySQL API (Capstone API)
 
-when you run admin panel which uses Django framework tables are automatically created
+🗃️ MySQL Database Setup
 
-**********capston Api - folder*************
-Extract this folder to    -> Xampp -> htdocs -> capstone
+# ⚙️ Project Setup Guide
+## 🔒 Admin Panel – Django (Python)
+Navigate to settings.py and update your credentials:
 
-db_config.php - - in this file change your username password
-username - password
+python
+Copy
+Edit
+# settings.py
+USERNAME = 'your_username'
+PASSWORD = 'your_password'
+When you run the Django server, the required tables will be automatically created using Django's ORM.
 
-db_connect.php - in this file change your username password
-username - password
+## 🌐 Capstone API – PHP (Backend)
+Extract the folder capstone Api to the following location:
 
+rust
 
-*************flutter application*************
+XAMPP -> htdocs -> capstone
+Edit the following PHP files to match your XAMPP database credentials:
 
-main.dart -> in this file Change your ip address
+db_config.php
 
+db_connect.php
 
-for ip address type this command on terminal
+Replace:
 
--> open terminal -> ipconfig
+php
 
+$username = "your_username";
+$password = "your_password";
 
+# 📱 Flutter Application – Mobile App
+Open the main.dart file.
 
-->  Change your all api file locations
+Update the IP address to your system's IP for local API calls.
 
+🔍 To find your IP address:
 
-************** capstone - databse **************
+bash
+
+Open terminal → type: ipconfig (on Windows)
+Replace all API endpoint IPs in your Flutter files to match the one found above.
+
+# 🧾 Database Structure
+## 🗃️ Table: ratings_feedback
+
+sql
 
 CREATE TABLE ratings_feedback (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    appointment_id INT NOT NULL,
-    physio_name VARCHAR(255) NOT NULL,
-    patient_name VARCHAR(255) NOT NULL,
-    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
-    feedback TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  appointment_id INT NOT NULL,
+  physio_name VARCHAR(255) NOT NULL,
+  patient_name VARCHAR(255) NOT NULL,
+  rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  feedback TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
 );
 
+## ➕ Alter Table: physio_physiotherapist
+sql
 
-ALTER TABLE physio_physiotherapist ADD average_rating FLOAT DEFAULT 0;
+ALTER TABLE physio_physiotherapist
+ADD average_rating FLOAT DEFAULT 0;
+
+# 🚀 Summary
+This project combines Flutter, Django, and PHP with MySQL for a complete full-stack healthcare application. Follow the steps above to configure each part and ensure the system works seamlessly across platforms.
+
